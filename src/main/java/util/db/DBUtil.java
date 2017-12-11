@@ -6,7 +6,7 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 /**
- * Created by Ö£Ô¶·æ on 2017/8/2.
+ * Created by éƒ‘è¿œé”‹ on 2017/8/2.
  */
 public class DBUtil {
     private static String url;
@@ -16,12 +16,12 @@ public class DBUtil {
     private static Connection connection;
 
     static{
-        //¼ÓÔØÊı¾İ¿âÅäÖÃĞÅÏ¢£¬²¢¸øÏà¹ØµÄÊôĞÔ¸³Öµ
+        //åŠ è½½æ•°æ®åº“é…ç½®ä¿¡æ¯ï¼Œå¹¶ç»™ç›¸å…³çš„å±æ€§èµ‹å€¼
         loadConfig();
     }
 
     /**
-     * ¼ÓÔØÊı¾İ¿âÅäÖÃĞÅÏ¢£¬²¢¸øÏà¹ØµÄÊôĞÔ¸³Öµ
+     * åŠ è½½æ•°æ®åº“é…ç½®ä¿¡æ¯ï¼Œå¹¶ç»™ç›¸å…³çš„å±æ€§èµ‹å€¼
      */
     public static void loadConfig() {
         try {
@@ -34,14 +34,14 @@ public class DBUtil {
             driver= prop.getProperty("jdbc.driver");
             url = prop.getProperty("jdbc.url");
         } catch (Exception e) {
-            throw new RuntimeException("¶ÁÈ¡Êı¾İ¿âÅäÖÃÎÄ¼şÒì³££¡", e);
+            throw new RuntimeException("è¯»å–æ•°æ®åº“é…ç½®æ–‡ä»¶å¼‚å¸¸ï¼", e);
         }
     }
 
     public static Connection getConnection() {
         try {
-            Class.forName(driver); // ×¢²áÇı¶¯
-            connection = DriverManager.getConnection(url, userName, password); // »ñÈ¡Á¬½Ó
+            Class.forName(driver); // æ³¨å†Œé©±åŠ¨
+            connection = DriverManager.getConnection(url, userName, password); // è·å–è¿æ¥
         } catch (Exception e) {
             throw new RuntimeException("get connection error!", e);
         }
