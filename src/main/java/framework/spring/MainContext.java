@@ -11,6 +11,7 @@ public class MainContext {
         ClassPathXmlApplicationContext context=new ClassPathXmlApplicationContext("classpath:framework/spring/beans.xml");
 
         Car car= (Car) context.getBean("car");
+        System.out.println(car.getBrand());
         car.introduce();
     }
 

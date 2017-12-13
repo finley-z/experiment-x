@@ -19,7 +19,7 @@
     <!-- 初始化数据 -->
     <bean id="car" class="framework.spring.Car" init-method="myInit" destroy-method="myDestroy">
        <property name="brand" >
-           <value>VOLVO</value>
+           <value><![CDATA[VOLVO&S60]]></value>
        </property>
         <property name="color" >
             <value>255</value>
