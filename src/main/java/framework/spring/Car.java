@@ -44,6 +44,7 @@ public class Car implements BeanNameAware,BeanFactoryAware,InitializingBean,Disp
     }
 
     public void setBrand(String brand) {
+        this.brand=brand;
         System.out.println("....调用setBrand（）方法设置属性.....");
     }
 
