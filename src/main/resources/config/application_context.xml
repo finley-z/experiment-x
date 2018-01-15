@@ -101,9 +101,10 @@
             <list>
                 <value>classpath:config/mail.properties</value>
                 <value>classpath:config/redis.properties</value>
-            </list>
+            </list>bstract
         </property>
     </bean>
+
     <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage">
         <property name="from" value="${mail.from}"/>
         <!-- 查看SimpleMailMessage源码还可以注入标题,内容等 -->
