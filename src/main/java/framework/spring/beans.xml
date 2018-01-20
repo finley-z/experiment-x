@@ -31,4 +31,5 @@
     </bean>
 
     <bean class="framework.spring.containerEvent.RechargeListener"></bean>
+    <context:component-scan base-package="framework.spring"></context:component-scan>
 </beans>
