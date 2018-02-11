@@ -25,8 +25,7 @@
           <!--p:config-location="classpath:config/ehcache.xml"/>-->
 
     <!-- 扫描指定package下所有带有如@services,@resource,并把所注释的注册为Spring Beans,排除过滤含有@controller -->
-    <context:component-scan base-package="com.finley">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    <context:component-scan base-package="framework">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
     </context:component-scan>
 
@@ -40,37 +39,8 @@
         <property name="ignoreUnresolvablePlaceholders" value="true"/>
     </bean>
 
-    <!--jdbc数据源配置-->
-    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="driverClassName" value="${jdbc.driver}"/>
-    </bean>
 
-    <!-- Mybatis's sqlSessionFactory 配置 -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <!-- 自动匹配Mapper映射文件 -->
-        <property name="mapperLocations" value="classpath:mapper/**/*.xml"/>
-        <property name="configLocation" value="classpath:config/mybatis_config.xml"/>
-        <property name="typeAliasesPackage" value="com.finley.**.entity"/>
-    </bean>
 
-    <!-- spring自动扫描mybatis -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.finley.**.dao"/>
-    </bean>
-
-    <!-- 事物指定数据源 -->
-    <bean name="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"></property>
-    </bean>
-
-    <!-- 使用annotation定义事务 -->
-    <tx:annotation-driven transaction-manager="transactionManager"
-                          proxy-target-class="true"/>
 
     <!-- 激活自动代理功能 -->
     <aop:aspectj-autoproxy proxy-target-class="true"/>
@@ -102,7 +72,7 @@
             <list>
                 <value>classpath:config/mail.properties</value>
                 <value>classpath:config/redis.properties</value>
-            </list>bstract
+            </list>
         </property>
     </bean>
 

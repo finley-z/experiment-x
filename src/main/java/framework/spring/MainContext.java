@@ -1,6 +1,6 @@
 package framework.spring;
 
-import framework.spring.containerEvent.RechageService;
+import framework.spring.aop.AOPTest;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -15,10 +15,12 @@ public class MainContext {
 //        System.out.println(car.getBrand());
 //        car.introduce();
 
-        RechageService rechageService= (RechageService) context.getBean("rechageService");
-        rechageService.callback();
-        rechageService.recharge();
+//        RechageService rechageService= (RechageService) context.getBean("rechageService");
+//        rechageService.callback();
+//        rechageService.recharge();
 
+        AOPTest aopTest= (AOPTest) context.getBean("aopTest");
+        aopTest.before();
     }
 
 }
