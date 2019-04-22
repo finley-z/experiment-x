@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,4 +8,41 @@
 <body>
 
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+
+
+    <form id="form">
+        姓名:<input type="text" name="name"/>
+        年龄:<input type="text" name="age"/>
+
+        <button id="submit">提交</button>
+    </form>
+</body>
+<script type="text/javascript">
+    $(function(){
+        $("#submit").click(function(){
+            $.ajax({
+                url: "/register",
+                type: "post",
+                data: $("#form").serialize(),
+                success: function (data) {
+                   console.info(data);
+                },
+                error: function () {
+
+                }
+            })
+        });
+    })
+
+</script>
+>>>>>>> ae1fda4d7af7738be4f60e17e3c5535f6452d6d7
 </html>

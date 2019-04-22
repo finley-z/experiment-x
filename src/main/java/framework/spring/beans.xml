@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx
+      http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/aop
+      http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+
+
+    <!-- 初始化数据 -->
+    <bean id="car" class="framework.spring.Car" init-method="myInit" destroy-method="myDestroy">
+       <property name="brand" >
+           <value><![CDATA[VOLVO&S60]]></value>
+       </property>
+        <property name="color" >
+            <value>255</value>
+        </property>
+    </bean>
+
+    <bean id="rechageService" class="framework.spring.containerEvent.RechageService">
+
+    </bean>
+
+    <bean class="framework.spring.containerEvent.RechargeListener"></bean>
+    <context:component-scan base-package="framework.spring"></context:component-scan>
+</beans>
