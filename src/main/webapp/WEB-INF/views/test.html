@@ -1,0 +1,39 @@
+query: 用于包含查询使用到的语法
+1.1. match_all: 最简单的查询，获取索引所有数据，类似搜索 *。如：”query”:{“match_all”:{}}
+1.2. bool: 复合查询，可以包含多个查询条件，主要有(must,must_not,should)
+1.2.1. must: 用于包含逻辑与查询条件，即所有查询条件都满足才行
+1.2.2. must_not: 用于包含逻辑非查询条件，即不包含所有查询的条件数据
+1.2.3. should: 用于包含逻辑或查询条件，即其中有一个条件满足即可
+1.2.4. filter: 与must一样，包含的所有条件都要满足，但不会参与计算分值，查询速度上会提升不少
+1.3. match: 匹配查询，用于匹配指定属性数据，也可以匹配时间，IP等特殊数据
+1.3.1. 注意： match匹配不会解析通配符，匹配的效果受到索引属性类型影响，如果索引属性设置了分词，那么match匹配也会分词匹配，他也不解析”“，但可以设置逻辑关系来处理
+1.3.2. operator: 匹配逻辑关系，默认是or，可设置为and，这样可达到精确匹配的效果，具体见：https://www.elastic.co/guide/en/elasticsearch/reference/5.6/query-dsl-match-query.html#query-dsl-match-query-boolean
+1.4. query_string: 使用查询解析器来解析查询内容，如port:80 AND server:http。注意：此类型请求有很多选项属性，可以设置一些特殊的行为，具体见：https://www.elastic.co/guide/en/elasticsearch/reference/5.6/query-dsl-query-string-query.html
+1.5. term: 术语查询，查找包含在反向索引中指定的确切术语的文档
+1.6. terms: 术语查询，筛选具有匹配任何条件的字段，如”terms” : { “user” : [“kimchy”, “elasticsearch”]}
+1.7. range: 术语查询，将文档与具有特定范围内的字段相匹配。Lucene查询的类型依赖于字段类型，对于字符串字段，即TermRangeQuery，而对于number/date字段，查询是一个数字的范围。如：”range”:{“port”:{“gte”:10,”lte”:20,”boost”:2.0}}
+1.7.1. gte: 大于或等于
+1.7.2. gt: 大于
+1.7.3. lte: 小于或等于
+1.7.4. lt: 小于
+1.7.5. boost: 设置查询的boost值，默认值为1.0
+1.8. exists: 术语查询，返回在原始字段中至少有一个非空值的文档，注意：”“,”-“这些都不算是空值
+1.9. prefix: 术语查询，匹配包含带有指定前缀字段的字段(没有分析)，前缀查询映射到Lucene前缀查询，如：”prefix” : { “user” : “ki” }，查询user数据前缀为ki的doc
+1.10. wildcard: 术语查询，匹配具有匹配通配符表达式的字段(未分析)的文档。支持(*通配符)是匹配任何字符序列(包括空的序列)和(?通配符)它匹配任何一个字符。注意，这个查询可能比较慢，因为它需要迭代多个术语。为了防止非常慢的通配符查询，一个通配符项不应该从通配符开始，或者?通配符查询映射到Lucene通配符查询。如：”wildcard” : { “user” : “ki*y” }
+1.11. regexp: 术语查询，regexp查询允许您使用正则表达式术语查询，意味着Elasticsearch将把regexp应用到该字段的标记器所产生的词汇，而不是该字段的原始文本。regexp查询的性能严重依赖于所选择的正则表达式，通配符往往会降低查询性能。如：”regexp”:{ “name.first”:”s.*y” }
+1.12. fuzzy: 术语查询，模糊查询使用基于Levenshtein编辑距离的相似性。如：”fuzzy” : { “user” : “ki” }
+1.13. type: 术语查询，过滤文档匹配所提供的文档/映射类型。如：”type”:{ “value” : “my_type” }
+1.14. ids: 术语查询，过滤只具有提供的id的文档。注意：这个查询使用了_uid字段，类型是可选的，可以省略，也可以接受一组值。如果没有指定类型，那么将尝试在索引映射中定义的所有类型。如：”ids”:{ “type” : “my_type”,”values” : [“1”,”4”,”100”] }。
+highlight: 允许在一个或多个字段中突出显示搜索结果，基于lucene plain highlighter。在默认情况下，高亮显示会将高亮显示的文本包装在 and ，可以通过设置pre_tags 与 post_tags来自定义，如：”highlight”:{ “pre_tags” : [““], “post_tags” : [““], “fields” : {“_all”:{}} }
+2.1. pre_tags: 自定义包含搜索关键字的前缀
+2.2. post_tags: 自定义包含搜索关键字的后缀
+2.3. fields: 用于指定要高亮的属性，_all表示所以属性都需要高亮，如：”fields”:{ “_all” : {} }，也可以指定具体属性 “fields”:{ “app” : {} }，也可以给每个属性单独指定设置 “fields”:{ “app” : {“fragment_size” : 150, “number_of_fragments” : 3} }
+2.4. highlight_query: 可以通过设置highlight_query来突出显示搜索查询之外的查询，通常，最好将搜索查询包含在highlight_query中。如：”highlight_query”:{ “bool”:{“must”:[{“query_string”:{“query”:app:apache,”analyze_wildcard”:True,”all_fields”:True}}]} }
+2.5. fragment_size: 用于指定高亮显示时，碎片的长度，如果过短，高亮内容会被切分为多个碎片。默认情况下，当使用高亮显示的内容时，碎片大小会被忽略，因为它会输出句子，而不管它们的长度
+2.6. number_of_fragments 用于指定高亮显示时，碎片的数量，如果指定为0，那么就不会产生任何片段
+from: 可以通过使用from和size参数来对结果进行分页，from参数指定您想要获取的第一个结果的偏移量
+size: 可以通过使用from和size参数来对结果进行分页，size参数指定要返回结果的最大数量
+sort: 允许在特定的字段上添加一个或多个排序，排序是在每个字段级别上定义的，用特殊的字段名来排序，然后根据索引排序进行排序，如”sort”: [ { “date”: { “order”: “desc” } } ]，desc降序，asc升序
+aggs: 简单来说，aggs主要用于分类集合，可以将查询的数据按指定属性进行分类集合统计等，如：”aggs”:{ “deviceType”:{ “terms”:{ “field”:”deviceType”, “size”:6 } } }
+6.1. field: 简单来说，用于指定要分类的属性名称
+6.2. size: 用于指定分类集合的数量，即只集合前N名
